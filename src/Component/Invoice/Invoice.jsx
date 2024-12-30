@@ -16,8 +16,8 @@ const Invoice = () => {
     const fetchInvoices = async () => {
       try {
         const response = await axios.get(`${prodUrl}`);
+        console.log(response.data)
         if (response.data && response.data.data) {
-          console.log(response.data)
           setInvoices(response.data.data);
         } else {
           setInvoices([]);
