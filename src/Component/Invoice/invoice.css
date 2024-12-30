@@ -1,0 +1,220 @@
+.invoice_container {
+   padding: 40px;
+   text-align: center;
+   align-items: center;
+   justify-content: center;
+}
+
+.invoice_container h3 {
+   padding: 30px;
+}
+
+.invoice{
+   width: 80%;
+   margin: auto auto;
+   background-color: #cccccc63;
+   display: flex;
+   text-align: center;
+   align-items: center;
+   justify-content: center;
+   border-radius: 10px;
+}
+
+
+
+.invoice_btn {
+   width: 80%;
+   margin: auto auto;
+   padding: 20px;
+}
+
+.company_name {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 10px;
+   width: 80%;
+   margin: auto;
+}
+
+.company_name h1 {
+   color: blue;
+   font-weight: 900;
+}
+
+.way_bill {
+   background-color: black;
+   color: white;
+}
+
+.purchase_company_info {
+   text-align: start;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+}
+
+.purchase_company_info p {
+   font-weight: 700;
+   padding: 10px 0;
+}
+
+.invoice_details {
+   align-items: center;
+   padding: 20px;
+}
+
+.invoice_container ul {
+   display: none;
+}
+
+.invoice_table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.invoice_table th,
+.invoice_table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.invoice_table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.invoice_table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.print_btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.print_btn:hover {
+  background-color: #0056b3;
+}
+
+.invoice-list-container {
+  padding: 20px;
+}
+
+.invoice-list {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.invoice-list h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.invoice-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-list th,
+.invoice-list td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.invoice-list th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.invoice-list button {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.invoice-list button:hover {
+  background-color: #0056b3;
+}
+
+.price-type {
+  font-size: 0.8em;
+  color: #666;
+  margin-left: 5px;
+}
+
+/* Print styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .print-section,
+  .print-section * {
+    visibility: visible;
+  }
+  
+  .print-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  
+  .invoice-preview {
+    padding: 20px;
+  }
+  
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .preview-customer-info {
+    margin-bottom: 20px;
+  }
+  
+  .preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+  
+  .preview-table th,
+  .preview-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .preview-footer {
+    margin-top: 50px;
+  }
+  
+  .signature-section {
+    margin-top: 30px;
+    text-align: right;
+  }
+  
+  .price-type {
+    font-size: 0.7em;
+    color: #333;
+  }
+}

@@ -1,0 +1,76 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+ const [data, setData] = useState({
+      id: '',
+      name: '',
+      quantity: '',
+      price_per_bottle: '',
+      price_per_case: '',
+      payment: '',
+      status: '',
+      description: '',
+      company: '',
+      order_date: '',
+      delivery_date: ''
+   })
+
+
+
+      const onSubmitHandler = async (event) => {
+      event.preventDefault();
+      const formData = new FormData();
+      formData.append('id', data.id)
+      formData.append('name', data.name)
+      formData.append('quantity', data.quantity)
+      formData.append('price', data.price)
+      formData.append('description', data.description)
+      formData.append('order_date', data.order_date)
+      formData.append('delivery_date', data.delivery_date)
+      formData.append('status', data.status)
+      formData.append('company', data.company)
+
+      // const response = await axios.get(`${url}/orders`, formData);
+
+      if(response.data.success){
+         setData({
+            id,
+            name: '',
+            quantity: '',
+            price_per_bottle: '',
+            price_per_case: '',
+            payment: '',
+            status: '',
+            description: '',
+            company: '',
+            order_date: '',
+            delivery_date: ''
+         })
+         console.log(response.data.message)
+      } else {
+         console.log(err)
+      }
+   }

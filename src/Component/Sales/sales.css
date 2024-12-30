@@ -1,0 +1,64 @@
+.sales_container{
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   padding: 20px 40px;
+}
+
+.date {
+   display: flex;
+   text-align: center;
+   align-items: center;
+   justify-self: center;
+   gap: 5px;
+   padding: 10px;
+}
+
+.form_container {
+   width: 80%;
+   margin: auto auto;
+   background-color: #cccccc63;
+}
+
+.form_container h1 {
+   text-align: center;
+   padding: 10px;
+}
+
+form {
+   width: 100%;
+   padding: 20px;
+}
+
+.form_info {
+   padding: 0 20px;
+   text-align: start;
+   display: flex;
+   margin: 0 15px;
+}
+
+form label {
+   display: grid;
+   text-align: center;
+   padding: 10px;
+   align-items: center;
+   margin: auto auto;
+}
+
+input, button {
+   width: 90%;
+   padding: 15px;
+   border: none;
+   margin: 10px;
+}
+
+button {
+   width: 86%;
+   background-color: black;
+   color: white;
+}
+
+
+
+
+
