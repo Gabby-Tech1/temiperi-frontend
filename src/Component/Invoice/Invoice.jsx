@@ -9,7 +9,7 @@ const prodUrl = "https://temiperi-backend.onrender.com/temiperi/invoices";
 const baseUrl = window.location.hostname === "localhost" ? devUrl : prodUrl;
 
 const Invoice = () => {
-  const [invoices, setInvoices] = useState();
+  const [invoices, setInvoices] = useState([]);
   const printRef = useRef();
 
   useEffect(() => {
