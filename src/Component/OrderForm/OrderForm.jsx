@@ -297,8 +297,9 @@ const OrderForm = () => {
   };
 
   const getFilteredProducts = () => {
+    if (!searchQuery) return products; // Return all products if searchQuery is empty
     return products.filter((product) =>
-      product.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+      product?.name?.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
   };
 
@@ -456,8 +457,8 @@ const OrderForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {Array.isArray(products) && products.length > 0 ? (
-                  products.map((product) => (
+                {Array.isArray(getFilteredProducts()) && getFilteredProducts().length > 0 ? (
+                  getFilteredProducts().map((product) => (
                     <tr key={product._id}>
                       <td>{product.name || "Unnamed Product"}</td>
                       <td>
@@ -478,6 +479,7 @@ const OrderForm = () => {
                 )}
               </tbody>
             </table>
+
           </div>
         </div>
 
