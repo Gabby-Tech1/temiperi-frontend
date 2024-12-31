@@ -131,7 +131,7 @@ const OrderForm = () => {
       if (selectedProduct) {
         // Use wholesale price if quantity > 10, otherwise use retail price
         items[index].price =
-          value > 10
+          value > 9
             ? selectedProduct.price?.whole_sale_price || 0
             : selectedProduct.price?.retail_price || 0;
       }
