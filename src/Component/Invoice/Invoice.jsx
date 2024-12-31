@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const devUrl = "http://localhost:4000/temiperi/invoices";
-const prodUrl = "https://temiperi-backend.onrender.com/temiperi/invoices";
+const prodUrl = "https://temiperi-stocks-backend.onrender.com/temiperi/invoices";
 const baseUrl = window.location.hostname === "localhost" ? devUrl : prodUrl;
 
 const Invoice = () => {
