@@ -463,7 +463,7 @@ const OrderForm = () => {
                       <td>{product.name || "Unnamed Product"}</td>
                       <td>
                         <span className="currency-symbol">GH₵</span>
-                        {product.price?.whole_sale_price?.toFixed(2) || "N/A"}
+                        {product.price?.whole_sale_price?.toFixed(2) || 0}
                       </td>
                       <td>
                         <span className="currency-symbol">GH₵</span>

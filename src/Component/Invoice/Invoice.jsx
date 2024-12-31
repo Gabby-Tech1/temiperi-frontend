@@ -227,7 +227,7 @@ const Invoice = () => {
                   .map((item, index) => {
                     const price =
                       item.price.retail_price ||
-                      item.price.wholeSale_price ||
+                      item.price.whole_sale_price ||
                       0;
                     return `
                     <tr>
