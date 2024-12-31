@@ -3,9 +3,9 @@ import axios from 'axios';
 import { asset } from '../../assets/assets';
 import './invoice.css';
 
-const devUrl = "http://localhost:4000/temiperi";
-const prodUrl = "https://temiperi-backend.onrender.com/temiperi";
-const baseURL = window.location.hostname === "localhost" ? devUrl : prodUrl;
+const baseURL = process.env.NODE_ENV === 'production'
+  ? "https://temiperi-stocks-backend.onrender.com/temiperi"
+  : "http://localhost:4000/temiperi";
 
 const InvoiceList = () => {
   const [invoices, setInvoices] = useState([]);

@@ -9,13 +9,15 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import html2pdf from "html2pdf.js";
 
-const devUrl = "http://localhost:4000/temiperi";
-const prodUrl = "https://temiperi-backend.onrender.com/temiperi";
-const baseURL = window.location.hostname === "localhost" ? devUrl : prodUrl;
+const baseURL =
+  process.env.NODE_ENV === "production"
+    ? "https://temiperi-stocks-backend.onrender.com/temiperi"
+    : "http://localhost:4000/temiperi";
 
-const rootDevUrl = "http://localhost:4000";
-const rootProdUrl = "https://temiperi-backend.onrender.com";
-const rootBaseUrl = window.location.hostname === "localhost" ? rootDevUrl : rootProdUrl;
+const rootBaseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://temiperi-stocks-backend.onrender.com"
+    : "http://localhost:4000";
 
 const OrderForm = () => {
   const [data, setData] = useState({
@@ -295,12 +297,9 @@ const OrderForm = () => {
   };
 
   const getFilteredProducts = () => {
-    if (!products || products.length === 0) return [];
-    
-    return products.filter((product) => {
-      if (!product || !product.name) return false;
-      return product.name.toLowerCase().includes(searchQuery ? searchQuery.toLowerCase() : '');
-    });
+    return products.filter((product) =>
+      product.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+    );
   };
 
   const now = new Date();

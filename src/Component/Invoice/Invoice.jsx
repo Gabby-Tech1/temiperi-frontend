@@ -15,10 +15,10 @@ const Invoice = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(baseUrl);
-        if (response.data) {
+        const response = await axios.get(`${prodUrl}`);
+        console.log(response.data)
+        if (response.data && response.data.data) {
           setInvoices(response.data.data);
-          console.log(response.data);
         } else {
           setInvoices([]);
         }
@@ -252,7 +252,8 @@ const Invoice = () => {
                     <strong>
                       <span class="currency-symbol">GH₵</span>${invoice.totalAmount.toFixed(
                         2
-                      )}</strong>
+                      )}
+                    </strong>
                   </td>
                 </tr>
               </tfoot>
