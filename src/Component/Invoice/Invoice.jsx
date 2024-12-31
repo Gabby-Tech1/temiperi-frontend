@@ -39,6 +39,7 @@ const Invoice = () => {
   }, []);
 
   const handlePrint = (invoice) => {
+    console.log(invoice)
     // Convert logo to base64 to ensure it prints
     const getBase64Image = (img) => {
       const canvas = document.createElement("canvas");
@@ -225,21 +226,14 @@ const Invoice = () => {
               <tbody>
                 ${invoice.items
                   .map((item, index) => {
-                    const price =
-                      item.price.retail_price ||
-                      item.price.whole_sale_price ||
-                      0;
+                    const price = typeof item.price === "object" ? (item.price.retail_price || item.price.whole_sale_price || 0) : (item.price || 0)
                     return `
                     <tr>
                       <td>${index + 1}</td>
                       <td>${item.description}</td>
                       <td>${item.quantity}</td>
-                      <td><span class="currency-symbol">GH₵</span>${Number(
-                        price
-                      ).toFixed(2)}</td>
-                      <td><span class="currency-symbol">GH₵</span>${(
-                        item.quantity * price
-                      ).toFixed(2)}</td>
+                      <td><span class="currency-symbol">GH₵</span>${Number(price).toFixed(2)}</td>
+                      <td><span class="currency-symbol">GH₵</span>${(item.quantity * Number(price)).toFixed(2)}</td>
                     </tr>
                   `;
                   })
@@ -268,6 +262,7 @@ const Invoice = () => {
 
             <div class="terms-section">
               <p>All Terms & Conditions applied</p>
+              <p>Items sold out cannot be returned</p>
             </div>
           </body>
           </html>
