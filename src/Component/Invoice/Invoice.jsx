@@ -7,9 +7,11 @@ import { toast } from "react-toastify";
 const devUrl = "http://localhost:4000/temiperi/invoices";
 const prodUrl = "https://temiperi-stocks-backend.onrender.com/temiperi/invoices";
 const baseUrl = window.location.hostname === "localhost" ? devUrl : prodUrl;
+// const ordersProdUrl = "https://temiperi-stocks-backend.onrender.com/temiperi/orders";
 
 const Invoice = () => {
   const [invoices, setInvoices] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   const [activeFilter, setActiveFilter] = useState('all');
   const [showPhonePrompt, setShowPhonePrompt] = useState(false);
@@ -22,7 +24,7 @@ const Invoice = () => {
     const fetchInvoices = async () => {
       try {
         const response = await axios.get(`${prodUrl}`);
-        console.log(response.data)
+        console.log(response.data.data)
         if (response.data && response.data.data) {
           // Sort invoices by date, most recent first
           const sortedInvoices = response.data.data.sort((a, b) => 
@@ -54,6 +56,44 @@ const Invoice = () => {
     };
     fetchInvoices();
   }, []);
+
+
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     try {
+  //       const response = await axios.get(`${ordersProdUrl}`);
+  //       console.log(response.data.data)
+  //       if (response.data && response.data.data) {
+  //         // Sort invoices by date, most recent first
+  //         const sortedInvoices = response.data.data.sort((a, b) => 
+  //           new Date(b.createdAt) - new Date(a.createdAt)
+  //         );
+  //         setInvoices(sortedInvoices);
+  //         setFilteredInvoices(sortedInvoices);
+          
+  //         // Calculate initial total (all invoices)
+  //         const total = sortedInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+  //         setCurrentTotal(total);
+  //       } else {
+  //         setInvoices([]);
+  //         setFilteredInvoices([]);
+  //         setCurrentTotal(0);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching invoices:", error);
+  //       toast.error("Failed to fetch invoices. Please try again.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+  //     }
+  //   };
+  //   fetchInvoices();
+  // }, []);
 
   const filterInvoices = (filter) => {
     setActiveFilter(filter);
@@ -474,6 +514,7 @@ const Invoice = () => {
             <th>Invoice Number</th>
             <th>Customer Name</th>
             <th>Total Amount</th>
+            <th>Payment Method</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -484,6 +525,12 @@ const Invoice = () => {
                 <td>{invoice.invoiceNumber}</td>
                 <td>{invoice.customerName}</td>
                 <td>GH{invoice.totalAmount}</td>
+                <td className={`payment-method ${invoice.paymentMethod}`}>
+                  {invoice.paymentMethod === 'momo' ? 'Mobile Money' :
+                   invoice.paymentMethod === 'credit' ? 'Credit' :
+                   invoice.paymentMethod === 'cash' ? 'Cash' :
+                   invoice.paymentMethod || 'N/A'}
+                </td>
                 <td>
                   <button
                     onClick={() => handlePrint(invoice)}

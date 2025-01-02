@@ -300,6 +300,29 @@
   margin-left: 10px;
 }
 
+.payment-method {
+  text-transform: capitalize;
+  font-weight: 500;
+  padding: 4px 8px !important;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.payment-method.cash {
+  background-color: #e3fcef;
+  color: #0a6b3b;
+}
+
+.payment-method.momo {
+  background-color: #fff3e0;
+  color: #b45309;
+}
+
+.payment-method.credit {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
 /* Print styles */
 @media print {
   body * {
