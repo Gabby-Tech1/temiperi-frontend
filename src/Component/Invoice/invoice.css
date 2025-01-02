@@ -159,6 +159,147 @@
   margin-left: 5px;
 }
 
+.whatsapp_btn {
+  padding: 8px 15px;
+  background-color: #25D366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.whatsapp_btn:hover {
+  background-color: #128C7E;
+}
+
+.phone-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.phone-prompt-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+.phone-prompt-modal h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.phone-prompt-modal p {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.phone-prompt-modal input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.phone-prompt-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.phone-prompt-buttons button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.phone-prompt-buttons button:first-child {
+  background-color: #25D366;
+  color: white;
+}
+
+.phone-prompt-buttons button:last-child {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.phone-prompt-buttons button:hover {
+  opacity: 0.9;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: 1px solid #2c3e50;
+  border-radius: 5px;
+  background: white;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background: #2c3e50;
+  color: white;
+}
+
+.filter-btn.active {
+  background: #2c3e50;
+  color: white;
+}
+
+.daily-total {
+  margin-top: 20px;
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: right;
+  border: 1px solid #dee2e6;
+}
+
+.daily-total h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.daily-total .amount {
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-left: 10px;
+}
+
 /* Print styles */
 @media print {
   body * {

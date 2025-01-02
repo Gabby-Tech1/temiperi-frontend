@@ -10,6 +10,12 @@ const baseUrl = window.location.hostname === "localhost" ? devUrl : prodUrl;
 
 const Invoice = () => {
   const [invoices, setInvoices] = useState([]);
+  const [filteredInvoices, setFilteredInvoices] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [showPhonePrompt, setShowPhonePrompt] = useState(false);
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [currentTotal, setCurrentTotal] = useState(0);
   const printRef = useRef();
 
   useEffect(() => {
@@ -18,9 +24,20 @@ const Invoice = () => {
         const response = await axios.get(`${prodUrl}`);
         console.log(response.data)
         if (response.data && response.data.data) {
-          setInvoices(response.data.data);
+          // Sort invoices by date, most recent first
+          const sortedInvoices = response.data.data.sort((a, b) => 
+            new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setInvoices(sortedInvoices);
+          setFilteredInvoices(sortedInvoices);
+          
+          // Calculate initial total (all invoices)
+          const total = sortedInvoices.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+          setCurrentTotal(total);
         } else {
           setInvoices([]);
+          setFilteredInvoices([]);
+          setCurrentTotal(0);
         }
       } catch (error) {
         console.error("Error fetching invoices:", error);
@@ -37,6 +54,56 @@ const Invoice = () => {
     };
     fetchInvoices();
   }, []);
+
+  const filterInvoices = (filter) => {
+    setActiveFilter(filter);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const weekStart = new Date(today);
+    weekStart.setDate(weekStart.getDate() - 7);
+
+    let filtered;
+    switch (filter) {
+      case 'today':
+        filtered = invoices.filter(invoice => {
+          const invoiceDate = new Date(invoice.createdAt);
+          return invoiceDate >= today;
+        });
+        break;
+      case 'yesterday':
+        filtered = invoices.filter(invoice => {
+          const invoiceDate = new Date(invoice.createdAt);
+          return invoiceDate >= yesterday && invoiceDate < today;
+        });
+        break;
+      case 'thisWeek':
+        filtered = invoices.filter(invoice => {
+          const invoiceDate = new Date(invoice.createdAt);
+          return invoiceDate >= weekStart;
+        });
+        break;
+      case 'past':
+        filtered = invoices.filter(invoice => {
+          const invoiceDate = new Date(invoice.createdAt);
+          return invoiceDate < weekStart;
+        });
+        break;
+      default:
+        filtered = invoices;
+    }
+    
+    // Sort filtered results by date, most recent first
+    const sortedFiltered = filtered.sort((a, b) => 
+      new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setFilteredInvoices(sortedFiltered);
+
+    // Calculate total for filtered invoices
+    const total = sortedFiltered.reduce((sum, invoice) => sum + invoice.totalAmount, 0);
+    setCurrentTotal(total);
+  };
 
   const handlePrint = (invoice) => {
     console.log(invoice)
@@ -281,6 +348,42 @@ const Invoice = () => {
     };
   };
 
+  const handleWhatsAppShare = (invoice) => {
+    setSelectedInvoice(invoice);
+    setShowPhonePrompt(true);
+  };
+
+  const sendWhatsAppMessage = () => {
+    if (!customerPhone || !selectedInvoice) return;
+
+    const message = 
+      `*TEMIPERI ENTERPRISE*\n\n` +
+      `*Invoice #:* ${selectedInvoice.invoiceNumber}\n` +
+      `*Customer:* ${selectedInvoice.customerName}\n` +
+      `*Date:* ${new Date(selectedInvoice.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      })}\n` +
+      `*Time:* ${new Date(selectedInvoice.createdAt).toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit"
+      })}\n\n` +
+      `*Order Details:*\n` +
+      `${selectedInvoice.items.map((item, index) => 
+        `${index + 1}. ${item.description} - Qty: ${item.quantity}, Price: GH₵${item.price.toFixed(2)}`
+      ).join("\n")}\n\n` +
+      `*Total Amount:* GH₵${selectedInvoice.totalAmount.toFixed(2)}\n\n` +
+      `Thank you for your business!`;
+
+    const whatsappUrl = `https://wa.me/${customerPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+
+    setShowPhonePrompt(false);
+    setCustomerPhone("");
+    setSelectedInvoice(null);
+  };
+
   const now = new Date();
   const formattedDate = now.toLocaleDateString("en-US", {
     year: "numeric",
@@ -294,6 +397,31 @@ const Invoice = () => {
 
   return (
     <div className="invoice_container">
+      {showPhonePrompt && (
+        <div className="phone-prompt-overlay">
+          <div className="phone-prompt-modal">
+            <h3>Enter Customer's WhatsApp Number</h3>
+            <p>Please include country code (e.g., 233 for Ghana)</p>
+            <input
+              type="text"
+              value={customerPhone}
+              onChange={(e) => setCustomerPhone(e.target.value)}
+              placeholder="e.g., 233XXXXXXXXX"
+            />
+            <div className="phone-prompt-buttons">
+              <button onClick={sendWhatsAppMessage}>Send</button>
+              <button onClick={() => {
+                setShowPhonePrompt(false);
+                setCustomerPhone("");
+                setSelectedInvoice(null);
+              }}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      
+
       <img src={asset.logo} alt="" width={120} />
 
       <div className="date">
@@ -308,6 +436,38 @@ const Invoice = () => {
         </div>
       </div>
 
+      <div className="filter-buttons">
+        <button 
+          className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
+          onClick={() => filterInvoices('all')}
+        >
+          All Invoices
+        </button>
+        <button 
+          className={`filter-btn ${activeFilter === 'today' ? 'active' : ''}`}
+          onClick={() => filterInvoices('today')}
+        >
+          Today's Invoices
+        </button>
+        <button 
+          className={`filter-btn ${activeFilter === 'yesterday' ? 'active' : ''}`}
+          onClick={() => filterInvoices('yesterday')}
+        >
+          Yesterday's Invoices
+        </button>
+        <button 
+          className={`filter-btn ${activeFilter === 'thisWeek' ? 'active' : ''}`}
+          onClick={() => filterInvoices('thisWeek')}
+        >
+          This Week's Invoices
+        </button>
+        <button 
+          className={`filter-btn ${activeFilter === 'past' ? 'active' : ''}`}
+          onClick={() => filterInvoices('past')}
+        >
+          Past Invoices
+        </button>
+      </div>
       <table className="invoice_table">
         <thead>
           <tr>
@@ -318,8 +478,8 @@ const Invoice = () => {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(invoices) &&
-            invoices.map((invoice) => (
+          {Array.isArray(filteredInvoices) &&
+            filteredInvoices.map((invoice) => (
               <tr key={invoice._id}>
                 <td>{invoice.invoiceNumber}</td>
                 <td>{invoice.customerName}</td>
@@ -331,11 +491,27 @@ const Invoice = () => {
                   >
                     Print
                   </button>
+                  <button
+                    onClick={() => handleWhatsAppShare(invoice)}
+                    className="whatsapp_btn"
+                  >
+                    WhatsApp
+                  </button>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+      <div className="daily-total">
+        <h3>
+          {activeFilter === 'all' && "Total Sales: "}
+          {activeFilter === 'today' && "Today's Total Sales: "}
+          {activeFilter === 'yesterday' && "Yesterday's Total Sales: "}
+          {activeFilter === 'thisWeek' && "This Week's Total Sales: "}
+          {activeFilter === 'past' && "Past Total Sales: "}
+          <span className="amount">GH₵{currentTotal.toFixed(2)}</span>
+        </h3>
+      </div>
     </div>
   );
 };
