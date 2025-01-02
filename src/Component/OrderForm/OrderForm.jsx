@@ -23,6 +23,7 @@ const OrderForm = () => {
   const [data, setData] = useState({
     invoiceNumber: "",
     customerName: "",
+    paymentMethod: "",
     items: [{ description: "", quantity: 0, price: 0 }],
   });
   const [products, setProducts] = useState([]);
@@ -185,6 +186,7 @@ const OrderForm = () => {
       const invoiceData = {
         invoiceNumber: data.invoiceNumber,
         customerName: data.customerName,
+        paymentMethod: data.paymentMethod,
         items: finalItems.map((item) => ({
           description: item.description,
           quantity: item.quantity,
@@ -197,6 +199,7 @@ const OrderForm = () => {
       const orderPayload = {
         invoiceNumber: data.invoiceNumber,
         customerName: data.customerName,
+        paymentMethod: data.paymentMethod,
         items: finalItems.map((item) => ({
           description: item.description,
           quantity: item.quantity,
@@ -457,7 +460,8 @@ const OrderForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {Array.isArray(getFilteredProducts()) && getFilteredProducts().length > 0 ? (
+                {Array.isArray(getFilteredProducts()) &&
+                  getFilteredProducts().length > 0 ? (
                   getFilteredProducts().map((product) => (
                     <tr key={product._id}>
                       <td>{product.name || "Unnamed Product"}</td>
@@ -503,6 +507,21 @@ const OrderForm = () => {
                   name="customerName"
                   required
                 />
+              </label>
+              <label>
+                Payment Method:
+                <select
+                  name="paymentMethod"
+                  value={data.paymentMethod}
+                  onChange={onChangeHandler}
+                  required
+                  className="payment-select"
+                >
+                  <option value="">Select a payment method</option>
+                  <option value="cash">Cash</option>
+                  <option value="momo">Mobile Money</option>
+                  <option value="credit">Credit</option>
+                </select>
               </label>
               <h3>Add Item</h3>
               <div className="items">
@@ -582,6 +601,7 @@ const OrderForm = () => {
                       <div>
                         <h4>Invoice #: {data.invoiceNumber}</h4>
                         <h4>Customer: {data.customerName}</h4>
+                        <h4>Payment Method: {data.paymentMethod}</h4>
                       </div>
                     </div>
 
